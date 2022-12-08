@@ -1,3 +1,20 @@
+<?php
+    require "dbBroker.php";
+    require "model/user.php";
+
+
+    session_start();
+    if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
+        header("Location: index.php");
+        die();
+    }
+    else{
+        echo "Dobrodosli : " . $_SESSION['user']->username;
+    }
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +24,5 @@
     <title>Katalog</title>
 </head>
 <body>
-    <h1>CAOOOO</h1>
 </body>
 </html>

@@ -1,3 +1,28 @@
+<?php
+
+    require "dbBroker.php";
+    require "model/user.php";
+
+    session_start();
+    if(isset($_POST['username']) && isset($_POST['password'])){
+        $uname = $_POST['username'];
+        $upass = $_POST['password'];
+        $korisnik = new User(1,$uname,$upass);
+        $odg = User::logIn($uname,$upass,$conn);
+
+        if(!empty($odg) && $odg->num_rows > 0){
+            $_SESSION['user'] = $korisnik;
+            header('Location:katalog.php');
+            exit();
+        }
+        else{
+            $error = $_POST['error'];
+            $error = "Pogresan unos podataka. Pokusajte ponovo!";
+        }
+    }
+?>
+
+
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -31,19 +56,24 @@
     <div class="row">
         <div class="col-md-offset-5 col-md-4 text-center">
             <h1 class='text-white'>Welcome to Login Form</h1>
-              <div class="form-login"></br>
-                <h4>Login form</h4>
-                </br>
-                <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username"/>
-                </br></br>
-                <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password"/>
-                </br></br>
-                <div class="wrapper">
-                        <span class="group-btn">
-                            <a href="#" class="btn btn-danger btn-md">login <i class="fa fa-sign-in"></i></a>
-                        </span>
+            <form method="post" action="#">
+                <div class="form-login"></br>
+                    <h4>Login form</h4>
+                    </br>
+                    <input type="text" name="username" id="username" class="form-control input-sm chat-input" placeholder="username"/>
+                    </br></br>
+                    <input type="password" name="password" id="password" class="form-control input-sm chat-input" placeholder="password"/>
+                    </br></br>
+                    <div class="wrapper">
+                            <span class="group-btn">
+                                <input name="submit" type="submit" class="btn btn-danger btn-md">
+                            </span>
+                    </div>
+                    <br>
+                    <input type="text" name="error" class="form-control input-sm chat-input" style="border:none" value = "<?php echo (isset($error))?$error:'';?>"/>
+                    
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     </br></br></br>
