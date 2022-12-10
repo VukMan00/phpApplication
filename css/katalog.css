@@ -1,0 +1,62 @@
+body{
+    font: normal 14px Roboto,arial,sans-serif;
+    font-family: 'Dancing Script', cursive!important;
+    background-image:url('https://bestanimations.com/media/fall/1758795021fall-nature-animated-gif-15.gif');
+    background-position:center;
+    background-size:cover;
+    background-repeat: no-repeat;
+    color:aliceblue;
+}
+
+.heading-container{
+    width: 100%;
+    height: 500px;
+}
+
+.heading{
+    position: relative;
+    top: 200px;
+    text-align: end;
+}
+
+.dataOfUser{
+    display:flex;
+    flex-direction: row;
+    justify-content: end;
+    margin-right: 10px;
+}
+
+#logOut{
+    border-radius: 20px;
+    width: 80px;
+    height: 35px;
+    background-color: #FFCC99;
+    color:aliceblue;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#logOut:hover{
+    width: 90px;
+    height: 40px;
+    background-color: #FF8000;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+#main-heading{
+    margin-right: 50px;
+    font-size: 75px;
+    font-style: italic;
+    font-weight: bolder;
+}
+
+#user{
+    margin-right: 40px;
+    font-size: 40px;
+    font-style: italic;
+}
+
+
+

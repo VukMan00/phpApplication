@@ -7,11 +7,11 @@
     if(isset($_POST['username']) && isset($_POST['password'])){
         $uname = $_POST['username'];
         $upass = $_POST['password'];
-        $korisnik = new User(1,$uname,$upass);
         $odg = User::logIn($uname,$upass,$conn);
 
         if(!empty($odg) && $odg->num_rows > 0){
-            $_SESSION['user'] = $korisnik;
+            $user = $odg->fetch_object();
+            $_SESSION['user'] = $user;
             header('Location:katalog.php');
             exit();
         }
@@ -66,7 +66,7 @@
                     </br></br>
                     <div class="wrapper">
                             <span class="group-btn">
-                                <input name="submit" type="submit" class="btn btn-danger btn-md">
+                                <input name="submit" type="submit" class="btn btn-danger btn-md" value="Login" />
                             </span>
                     </div>
                     <br>
