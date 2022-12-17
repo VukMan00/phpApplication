@@ -1,16 +1,19 @@
 body{
     font: normal 14px Roboto,arial,sans-serif;
     font-family: 'Dancing Script', cursive!important;
-    background-image:url('https://bestanimations.com/media/fall/1758795021fall-nature-animated-gif-15.gif');
-    background-position:center;
-    background-size:cover;
-    background-repeat: no-repeat;
-    color:aliceblue;
+    background-color: #DE8C3C;
+    margin: 0px;
 }
 
 .heading-container{
     width: 100%;
-    height: 500px;
+    background-image:url('https://bestanimations.com/media/fall/1758795021fall-nature-animated-gif-15.gif');
+    background-position:center;
+    background-size:cover;
+    background-repeat: no-repeat;
+    height: 800px;
+    color:aliceblue;
+    border-bottom: 2px solid aliceblue;
 }
 
 .heading{
@@ -30,6 +33,7 @@ body{
     border-radius: 20px;
     width: 80px;
     height: 35px;
+    margin-top: 10px;
     background-color: #FFCC99;
     color:aliceblue;
     text-align: center;
@@ -58,5 +62,132 @@ body{
     font-style: italic;
 }
 
+.between{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+}
 
+.cart-shopping{
+    display:flex;
+    flex-direction: row;
+    position: fixed;
+    right: 20px;
+    top: 200px;
+    z-index: -1;
+}
 
+.articles{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.item{
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    border: 10px solid saddlebrown;
+    margin-top: 20px;
+    margin-left: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 20%;
+    height: 60%;
+}
+
+#shopping-cart{
+    width: 350px;
+    height: 200px;
+    border-radius: 14px;
+}
+
+img{
+    width: 70%;
+    height: 90%;
+    border-radius: 20px;
+}
+
+.add-cart{
+    text-align: center;
+}
+
+.btn-add-basket{
+    border-radius: 20px;
+    border: 2px solid saddlebrown;
+    height: 50px;
+    margin-bottom: 10px;
+    width: 50%;
+    font-size: larger;
+    font-weight: bolder;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.btn-add-basket:hover{
+    background-color: #FF8000;
+    transition: background-color 0.5s linear 0.1s;
+}
+
+.price,
+.brand{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 7px solid saddlebrown;
+    border-radius: 10px;
+}
+
+#alert{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 100px;
+    margin-left: 500px;
+}
+
+#box{
+    border-radius: 5px; 
+    height: auto;
+    width: auto;
+    float:left;
+    text-align: center;
+    box-shadow: 2px 2px 8px black;
+    background-color: white;
+}
+
+.obavestenje{
+    background-color: saddlebrown;
+    color: white;
+    font-size: larger;
+    padding:5px;
+}
+
+.sadrzaj{
+    margin-top: 30px;
+}
+
+#confirm{
+    height: 25px;
+    width: 80px;
+    border-radius: 8px;
+    background-color: aliceblue;
+    color: saddlebrown;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 400px;
+    box-sizing: border-box;
+    font-size: medium;
+    font-weight: bold;
+}
+
+#confirm:hover{
+    background-color: #FF8000;
+    color: aliceblue;
+    transition: background-color 0.5s linear 0.1s;
+}

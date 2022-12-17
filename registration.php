@@ -1,24 +1,26 @@
 <?php
-    require "dbBroker.php";
-    require "model/user.php";
+ require "dbBroker.php";
+ require "model/user.php";
 
-    session_start();
-    if(isset($_POST['username']) && isset($_POST['password'])){
-        $uname = $_POST['username'];
-        $upass = $_POST['password'];
-        $odg = User::logIn($uname,$upass,$conn);
+ session_start();
+ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['name']) && isset($_POST['password'])){
+     $uname = $_POST['username'];
+     $upass = $_POST['password'];
+     $odg = User::logIn($uname,$upass,$conn);
 
-        if(!empty($odg) && $odg->num_rows > 0){
-            $user = $odg->fetch_object();
-            $_SESSION['user'] = $user;
-            header('Location:katalog.php');
-            exit();
-        }
-        else{
-            $error = $_POST['error'];
-            $error = "Pogresan unos podataka. Pokusajte ponovo!";
-        }
-    }
+     if(empty($odg) || $odg->num_rows == 0){
+         $ime = $_POST['name'];
+         $prezime = $_POST['lastname'];
+         $user = new User($uname,$upass,$ime,$prezime);
+         $odg = User::register($uname,$upass,$ime,$prezime,$conn);
+         header('Location: index.php');
+         exit();
+     }
+     else{
+         $error = $_POST['error'];
+         $error = "User already exist!";
+     }
+ }
 ?>
 
 
@@ -37,7 +39,7 @@
     <meta name="keywords"
           content="unique login form,leamug login form,boostrap login form,responsive login form,free css html login form,download login form">
     <meta name="author" content="leamug">
-    <title>Login</title>
+    <title>Registration</title>
     <link href="css/style.css?<?php echo time(); ?>" rel="stylesheet" id="style">
     <!-- Bootstrap core Library -->
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -54,22 +56,25 @@
 <div class="container">
     <div class="row">
         <div class="col-md-offset-5 col-md-4 text-center">
-            <h1 class='text-white'>Welcome to Login Form</h1>
+            <h1 class='text-white'>Autumn online shop registration</h1>
             <form method="post" action="#">
                 <div class="form-login"></br>
-                    <h4>Login form</h4>
+                    <h4>Register now</h4>
                     </br>
                     <input type="text" name="username" id="username" class="form-control input-sm chat-input" placeholder="username"/>
                     </br></br>
                     <input type="password" name="password" id="password" class="form-control input-sm chat-input" placeholder="password"/>
                     </br></br>
+                    <input type="text" name="name" id="name" class="form-control input-sm chat-input" placeholder="name"/>
+                    </br></br>
+                    <input type="text" name="lastname" id="lastname" class="form-control input-sm chat-input" placeholder="lastname"/>
+                    </br></br>
                     <div class="wrapper">
                             <span class="group-btn">
-                                <input name="submit" type="submit" class="btn btn-danger btn-md" value="Login" />
+                                <input name="submit" type="submit" class="btn btn-danger btn-md" value="Register" />
                             </span>
                     </div>
                     <br>
-                    <a href="registration.php">Don't have account? Sign up!!</a>
                     <input type="text" name="error" class="form-control input-sm chat-input" style="border:none" value = "<?php echo (isset($error))?$error:'';?>"/>
                 </div>
             </form>

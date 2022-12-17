@@ -18,9 +18,14 @@ class User{
     }
 
 
-    public static function logIn($name, $password, mysqli $conn){
-        $q = "SELECT * FROM user WHERE username= '".$name."' and password ='".$password."' limit 1;";
+    public static function logIn($username, $password, mysqli $conn){
+        $q = "SELECT * FROM user WHERE username= '".$username."' and password ='".$password."' limit 1;";
         
+        return $conn->query($q);
+    }
+
+    public static function register($username,$password,$ime,$prezime,mysqli $conn){
+        $q = "INSERT INTO user(username, password, ime, prezime) values('$username', '$password', '$ime', '$prezime')";
         return $conn->query($q);
     }
 }

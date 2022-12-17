@@ -2,7 +2,7 @@
 $host = "localhost";
 $db = "phpdomaci";
 $user = "root";
-$pass = "";
+$pass = "vukmanojlovic";
 
 $conn = new mysqli($host,$user,$pass,$db);
 
