@@ -6,6 +6,7 @@ class Article{
     public $marka;
     public $cena;
     public $velicina;
+    public $kolicina;
 
     public function __construct($id=null,$naziv=null,$marka=null,$cena=null,$velicina=null)
     {
@@ -20,6 +21,11 @@ class Article{
     public static function getArticles($conn){
         $query = "SELECT * FROM articles";
         return $conn->query($query);
+    }
+
+    public static function getArticleById($idArticle,$conn){
+        $q = "SELECT * FROM articles WHERE id= '".$idArticle."'";
+        return $conn->query($q);
     }
 }
 

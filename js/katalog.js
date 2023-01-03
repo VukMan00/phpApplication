@@ -1,4 +1,4 @@
-function alert(){
+function showAlert(){
     document.getElementById('alert').style.display = 'block';
     return false;
 }

@@ -2,6 +2,7 @@
     require "dbBroker.php";
     require "model/user.php";
     require "model/article.php";
+    require "model/basket.php";
 
     $pictures = array("slike/thmw0mw27688-bds-5_16227.jpg","slike/boot.jpg","slike/cipele.webp","slike/asos chukka boots.webp","slike/kapa.webp","slike/Kickers- Kick HI patike.webp","slike/kozna jakna.webp","slike/Only & sons kaput.webp");
 
@@ -12,10 +13,12 @@
     }
     else{
         $user = $_SESSION['user'];
+        $idUser = $user->userId;
         $ime = $user->ime;
         $prezime = $user->prezime;
         $username = $user->username;
         $password = $user->password;
+        $brojProizvoda = $user->brojProizvoda;
     }
 
     $result = Article::getArticles($conn);
@@ -29,12 +32,78 @@
         $article = new Article($id,$naziv,$marka,$cena,$velicina);
         $articles[] = $article;
     }
+    
+    if(!isset($_SESSION['korpa'])){
+        $_SESSION['korpa'] = array();
+    }
+    
+    $sizeArray = array();
+    $kolicina = 0;
+
+    if(isset($_POST["submit"]) && $_POST["submit"]=="Dodaj u korpu"){
+        echo '<style>#alert{visibility: visible !important;}</style>';
+        if(!empty($_POST['size'])){
+            $sizes = $_POST['size'];
+            foreach($sizes as $size){
+                $kolicina++;
+                $sizeArray[] = $size;
+            }
+        }
+        else{
+            $kolicina++;
+        }
+        $idArtBasket = $_POST['id'];
+        $rslProvera = Basket::getArticleByArticleId($idArtBasket,$user->userId,$conn);
+        $provera = mysqli_fetch_row($rslProvera);
+        if($provera==null){
+            $user->brojProizvoda = $user->brojProizvoda+1;
+            $rsl = Article::getArticleById($idArtBasket,$conn);
+            $articleOfBasket = $rsl->fetch_object();
+
+            $articleOfBasket->velicina = implode(" ",$sizeArray);
+            $articleOfBasket->kolicina = $kolicina;
+
+            $_SESSION['korpa'][] = $articleOfBasket;
+            $rsl = User::update($user->userId,$user->brojProizvoda,$conn);
+            $odg = Basket::add($user->userId,$articleOfBasket->id,$articleOfBasket->kolicina,$articleOfBasket->velicina,$conn);
+        }
+        else{
+            $rslCheck= Basket::getSizesByArticleId($idArtBasket,$user->userId,$conn);
+            $rsl = mysqli_fetch_row($rslCheck);
+            $velicinaUKorpi = $rsl[0];
+            $kolicinaUKorpi = $rsl[1];
+
+            $velicineKorpe = explode(" ",$velicinaUKorpi);
+            $flag = true;
+            for($i=0;$i<sizeof($sizeArray);$i++){
+                for($j=0;$j<sizeof($velicineKorpe);$j++){
+                    if($sizeArray[$i] == $velicineKorpe[$j]){
+                        $flag = false;
+                    }
+                }
+                if($flag==true){
+                    $velicinaUKorpi = $velicinaUKorpi . " " . $sizeArray[$i];
+                    $kolicinaUKorpi++;
+                }
+            }
+
+            $odg = Basket::updateVelicinaKolicina($idArtBasket,$user->userId,$kolicinaUKorpi,$velicinaUKorpi,$conn);
+        }
+    }
+
+    if(isset($_POST['submit']) && $_POST['submit']=="OK"){
+        echo '<style>#alert{visibility: hidden !important;}</style>';
+    }
+
+    if(isset($_POST['vidiKorpu'])){
+        header('Location:korpa.php');
+    }
 
     if(isset($_POST['LogOut'])){
         $_SESSION['user']=null;
+        unset($_SESSION['korpa']);
         header("Location:index.php");
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +113,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/katalog.css?<?php echo time(); ?>" rel="stylesheet">
+    <script src="path/from/html/page/to/jquery.min.js"></script>
     <script type="text/javascript" src = "js/katalog.js"></script>
     <title>Katalog</title>
 </head>
@@ -52,6 +122,7 @@
         <div class="dataOfUser">
             <form method="post" aciton="#">
                 <input type="submit" name="LogOut" id="logOut" value="LogOut"/>
+            </form>
         </div>
         <div class="heading">
             <h1 id="main-heading">Welcome to Autumn shop</h1><h2 id="user"><?php echo (isset($user))?$ime." ".$prezime:''; ?></h2>
@@ -60,11 +131,18 @@
     <br><br>
     <div class="between">
         <div class="bucket">
+            <form method="POST" action="#">
+                <input type="submit" name="vidiKorpu" id="vidiKorpu" value="Pogledaj korpu"/>
+            </form>
             <img src="slike/giphy.gif" id="shopping-cart">
         </div>
         <div class="cart-shopping">
             <img src="slike/icon-cart.png" style="width:70px; height:50px;" id="cart">
-            <h4>Broj proizvoda</h4>
+            <h4><?php
+            $user = $_SESSION['user'];
+            if($user->brojProizvoda!=0)
+            {echo $user->brojProizvoda;}
+            else{echo 'Broj proizvoda';}?></h4>
         </div>
     </div>
     <br><br>
@@ -74,7 +152,7 @@
             foreach($articles as $ar):
         ?>
         <div class="item">
-            <form method="post" onsubmit="return alert()">
+            <form method="POST" id="main-form" action="katalog.php#main-form">
                 <input type="hidden" name="id" value="<?php echo $ar->id?>"/>
                 <h1 id="name" style="text-align:center"><?php echo $ar->naziv ?></h1>
                 <div class="picture" style="text-align: center;">
@@ -101,22 +179,24 @@
                         ?>
                         <div>
                             <label for="size" style="margin-left:10px"><?php echo $arrayVelicina[$j]; ?></label>
-                            <input type="checkbox" id="size" name="size">
+                            <input type="checkbox" id="size" name="size[]" value="<?php echo $arrayVelicina[$j];?>" />
                         </div>
-                        <?php endfor;?>
+                        <?php 
+                            endfor;
+                        ?>
                     </div>
                 </div>
                 <div class="add-cart">
-                    <input class="btn-add-basket" type="submit" name="submit" class="addToBasket" value="Dodaj u korpu"/>
+                    <input class="btn-add-basket" type="submit" name="submit" value="Dodaj u korpu" />
                 </div>
-                <div id="alert">
+                <div id="alert" style="visibility:hidden;">
                     <div id="box">
                         <div class="obavestenje">
                             Obaveštenje!
                         </div>
                         <div class="sadrzaj">
                             <p>Proizvod je dodat u korpu</p>
-                            <button type="button" id="confirm" onclick="hideAlert()">OK</button>
+                            <input type="submit" id="confirm" name="alertOk" value="OK"/>
                         </div>
                     </div>
                 </div>
