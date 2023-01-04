@@ -3,23 +3,18 @@
  require "model/user.php";
 
  session_start();
- if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['name']) && isset($_POST['password'])){
-     $uname = $_POST['username'];
-     $upass = $_POST['password'];
-     $odg = User::logIn($uname,$upass,$conn);
-
-     if(empty($odg) || $odg->num_rows == 0){
-         $ime = $_POST['name'];
-         $prezime = $_POST['lastname'];
-         $user = new User($uname,$upass,$ime,$prezime);
-         $odg = User::register($uname,$upass,$ime,$prezime,$conn);
-         header('Location: index.php');
-         exit();
-     }
-     else{
-         $error = $_POST['error'];
-         $error = "User already exist!";
-     }
+ if(isset($_GET['submit']) && $_GET['submit']=='Register'){
+    $error = $_GET['error'];
+    if($error=='Korisnicko ime je dostupno!'){
+        $uname = $_GET['username'];
+        $upass = $_GET['password'];
+        $ime = $_GET['name'];
+        $prezime = $_GET['lastname'];
+        $user = new User($uname,$upass,$ime,$prezime);
+        $odg = User::register($uname,$upass,$ime,$prezime,$conn);
+        header('Location: index.php');
+        exit();
+    }
  }
 ?>
 
@@ -49,6 +44,7 @@
     <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
     <!-- Font Awesome-->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript"  src="js/registration.js"></script>
 </head>
 <body>
 
@@ -57,11 +53,11 @@
     <div class="row">
         <div class="col-md-offset-5 col-md-4 text-center">
             <h1 class='text-white'>Autumn online shop registration</h1>
-            <form method="post" action="#">
+            <form method="GET">
                 <div class="form-login"></br>
                     <h4>Register now</h4>
                     </br>
-                    <input type="text" name="username" id="username" class="form-control input-sm chat-input" placeholder="username"/>
+                    <input type="text" name="username" id="username" class="form-control input-sm chat-input" placeholder="username" onblur="proveri(document.getElementById('username').value)"></>
                     </br></br>
                     <input type="password" name="password" id="password" class="form-control input-sm chat-input" placeholder="password"/>
                     </br></br>
@@ -75,12 +71,13 @@
                             </span>
                     </div>
                     <br>
-                    <input type="text" name="error" class="form-control input-sm chat-input" style="border:none" value = "<?php echo (isset($error))?$error:'';?>"/>
+                    <input type="text" name="error" id="error" class="form-control input-sm chat-input" style="border:none" value=''/>
                 </div>
             </form>
         </div>
     </div>
     </br></br></br>
 </div>
+
 </body>
 </html>

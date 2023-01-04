@@ -7,6 +7,8 @@
     
     session_start();
     $user=null;
+    $cena = 0;
+    static $brojProizvoda = 0;
     if(isset($_SESSION['user'])){
         $user=$_SESSION['user'];
         $result = Basket::getArticlesByUserId($user->userId, $conn);
@@ -14,20 +16,18 @@
         $velicine = array();
         $kolicina = array();
         while($row = mysqli_fetch_object($result)){
-            $userId = $row->userId;
             $articleId = $row->articleId;
             $korpa[] = $articleId;
             $velicine[] = $row->velicina;
-            $kolicina[] = $row->kolicina;
+            $kolicine[] = $row->kolicina;
         }
 
+        $brojProizvoda = $user->brojProizvoda;
         $korpa_items = array();
-        $cena = 0;
-        $brojProizvoda = sizeof($korpa);
         for($i=0;$i<sizeof($korpa);$i++){
             $result1 = Article::getArticleById($korpa[$i],$conn);
             $article = $result1->fetch_object();
-            $cena = $cena + $article->cena*$kolicina[$i];
+            $cena = $cena + $article->cena*$kolicine[$i];
             $korpa_items[] = $article;
         }
 
@@ -71,27 +71,25 @@
     if(isset($_POST['submit']) && $_POST['submit']=="Ok"){
         $article = $_SESSION['viewArticle'];
         $kolicina = $_SESSION['kolicina'];
-        $velicine = $article->velicina;
+        $velicine = $_POST['velicina'];
         if(!empty($_POST['size'])){
             $sizes = $_POST['size'];
             foreach($sizes as $size){
-                $velicine = $velicine . " " . $size;
+                $velicine = $velicine. " " .$size;
                 $kolicina++;
             }
 
             $rsl = Basket::updateVelicinaKolicina($article->id,$user->userId,$kolicina,$velicine,$conn);
         }
+        else{
+            if($velicine!=$article->velicina){
+                $kolicina--;
+            }
+            $rsl = Basket::updateVelicinaKolicina($article->id,$user->userId,$kolicina,$velicine,$conn);
+        }
         echo '<style>#div-view{visibility: hidden !important;}</style>';
         header("Refresh:0");
 
-    }
-
-    if(isset($_POST['submit']) && $_POST['submit'] == "Izbrisi"){
-        $article =$_SESSION['viewArticle'];
-        $rsl = Basket::delete($article->id,$user->userId,$conn);
-        $rsl = User::update($user->userId,$user->brojProizvoda-1,$conn);
-        echo '<style>#div-view{visibility: hidden !important;}</style>';
-        header("Refresh:0");
     }
 
     if(isset($_POST['LogOut'])){
@@ -111,10 +109,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/korpa.css?<?php echo time(); ?>" rel="stylesheet">
+    <script type="text/javascript" src="js/korpa.js"></script>
     <title>Korpa</title>
 </head>
 <body>
-    <form method="post" aciton="#">
+    <form method="POST" aciton="#">
         <div class="dataOfUser">
             <input type="submit"  name="back" id="back" value="Povratak na katalog"/>
             <input type="submit"  name="LogOut" id="logOut" value="LogOut"/>
@@ -131,7 +130,7 @@
 
     <div class="articles">
         <form method="POST">
-            <table border="1">
+            <table border="1" id="tblBasket">
                 <thead>
                     <tr>
                         <th></th>
@@ -139,6 +138,7 @@
                         <th>Marka</th>
                         <th>Cena</th>
                         <th>Velicine</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -155,6 +155,7 @@
                         <td><?php echo $korpa_item->marka;?></td>
                         <td><?php echo $korpa_item->cena . " " . "RSD";?></td>
                         <td><?php echo $velicine[$brojac]; $brojac++;?></td>   
+                        <td><a href="#" id="delete" onclick="obrisi('<?php echo $korpa_item->id; ?>','<?php echo $user->userId;?>',this.parentNode.parentNode.rowIndex)">Izbrisi</a></td>
                     </tr>
 
                     <?php endforeach;?>
@@ -162,7 +163,7 @@
                 <tfoot>
                     <tr>
                         <td>Ukupno:</td>
-                        <td><?php echo $cena . " " . "RSD"?></td>
+                        <td id="ukupno"><?php echo $cena . " " . "RSD"?></td>
                     </tr>
                 </tfoot>
             </table>
@@ -198,7 +199,6 @@
                     $view = null;
                 ?>
                 <br>
-                <input type = "submit" id="delete-article" name="submit" value = "Izbrisi"/>
                 <input type = "submit" id="submit-article" name="submit" value="Ok"/>
             </div>
         </form>

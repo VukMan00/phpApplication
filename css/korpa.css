@@ -95,7 +95,7 @@ td,th{
     margin-top: 100px;
     margin-left: 700px;
     width: 200px;
-    height: 320px;
+    height: 330px;
     padding-left: 10px;
     padding-top: 10px;
     border: 10px solid saddlebrown;
@@ -103,7 +103,6 @@ td,th{
     background-color: #CC6600;
 }
 
-#delete-article,
 #submit-article{
     border-radius: 20px;
     border: 2px solid saddlebrown;
@@ -117,11 +116,19 @@ td,th{
     background-color: aliceblue;
 }
 
-#delete-article:hover,
 #submit-article:hover{
     background-color: #FF8000;
     color: aliceblue;
     transition: background-color 0.5s linear 0.1s;
+}
+
+#delete{
+    color:aliceblue;
+    text-decoration: none;
+    cursor: pointer;
+    font-style: italic;
+    font-size: medium;
+    font-weight: bold;
 }
 
 
