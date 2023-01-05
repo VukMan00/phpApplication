@@ -38,6 +38,7 @@
         $_SESSION['viewArticle'] = new Article();
         $_SESSION['dostupneVelicine'] = '';
         $_SESSION['kolicina'] = 0;
+        $_SESSION['error']='';
         echo '<style>#error{visibility: hidden !important;}</style>';
     }
 
@@ -46,23 +47,30 @@
         $selektovano = array();
         if(!empty($_POST["select"])){
             $selektovano = $_POST['select'];
-            $idArticle = $selektovano[0];
-            $result = Article::getArticleById($idArticle,$conn);
-            $article = $result->fetch_object();
-            $_SESSION['dostupneVelicine'] = $article->velicina;
+            if(sizeof($selektovano)==1){
+                $idArticle = $selektovano[0];
+                $result = Article::getArticleById($idArticle,$conn);
+                $article = $result->fetch_object();
+                $_SESSION['dostupneVelicine'] = $article->velicina;
 
-            $resultVelicina = Basket::getSizesByArticleId($idArticle,$user->userId,$conn);
-           
-            $rsl= mysqli_fetch_row($resultVelicina);
-            $article->velicina = $rsl[0];
-            $_SESSION['kolicina'] = $rsl[1];
+                $resultVelicina = Basket::getSizesByArticleId($idArticle,$user->userId,$conn);
+            
+                $rsl= mysqli_fetch_row($resultVelicina);
+                $article->velicina = $rsl[0];
+                $_SESSION['kolicina'] = $rsl[1];
+                $_SESSION['viewArticle'] = $article;
 
-            $_SESSION['viewArticle'] = $article;
-
-            echo '<style>#error{visibility: hidden !important;}</style>';
-            echo '<style>#div-view{visibility: visible !important;}</style>';
+                echo '<style>#error{visibility: hidden !important;}</style>';
+                echo '<style>#div-view{visibility: visible !important;}</style>';
+            }
+            else{
+                $_SESSION['error']='Mozete samo jedan artikal da izaberete!';
+                echo '<style>#error{visibility: visible !important;}</style>';
+                echo '<style>#div-view{visibility: hidden !important;}</style>';
+            }
         }
         else{
+            $_SESSION['error']="Niste izabrali artikal";
             echo '<style>#error{visibility: visible !important;}</style>';
             echo '<style>#div-view{visibility: hidden !important;}</style>';
         }
@@ -78,7 +86,7 @@
                 $velicine = $velicine. " " .$size;
                 $kolicina++;
             }
-
+            
             $rsl = Basket::updateVelicinaKolicina($article->id,$user->userId,$kolicina,$velicine,$conn);
         }
         else{
@@ -97,8 +105,14 @@
         unset($_SESSION['korpa']);
         header("Location:index.php");
     }
+
     if(isset($_POST['back'])){
+        $brojProizvoda = User::getBrojProizvoda($user->userId,$conn);
+        $rslBr = mysqli_fetch_row($brojProizvoda);
+        $user->brojProizvoda = $rslBr[0];
+        $_SESSION['user'] = $user;
         header("Refresh:0; url=katalog.php");
+        exit();
     }
 ?>
 
@@ -110,6 +124,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/korpa.css?<?php echo time(); ?>" rel="stylesheet">
     <script type="text/javascript" src="js/korpa.js"></script>
+    <script tpy="text/javascript" src="js/prikazi.js"></script>
     <title>Korpa</title>
 </head>
 <body>
@@ -125,7 +140,24 @@
             echo $user->ime . " " . $user->prezime;
         } ?>
         </h1>
-        <h2>Vasa korpa:</h2>
+        <div class="pretraga">
+            <h2>Pronadji artikal</h2>
+            <select id="artikal" name="artikal" onchange="prikaziArtikal(this.value,'<?php echo $user->userId;?>');">
+                <?php
+                    $articles = array();
+                    $articles[] = new Article();
+                    foreach($korpa_items as $korpa_item){
+                        $articles[] = $korpa_item;
+                    }
+                    
+                    foreach($articles as $article):
+                ?>
+                <option value="<?php echo $article->id;?>"><?php echo $article->naziv?></option>
+                <?php
+                    endforeach;
+                ?>
+            </select>
+        </div>
     </div>
 
     <div class="articles">
@@ -149,7 +181,7 @@
                     <tr>
                         <td>
                             <label for="select[]"><?php echo $korpa_item->id; ?></label>
-                            <input type="checkbox" id="select" name="select[]" value="<?php echo $korpa_item->id?>">
+                            <input type="checkbox" id="select" class="select" name="select[]" value="<?php echo $korpa_item->id?>">
                         </td>
                         <td><?php echo $korpa_item->naziv;?></td>
                         <td><?php echo $korpa_item->marka;?></td>
@@ -169,8 +201,8 @@
             </table>
             <br>
             <div class="submits">
-                <input type="submit" class="button-action" id="submit" name="submit" value="Pogledaj artikal"/>
-                <h1 id="error" style="visibility:hidden; font-style:italic;">Niste odabrali artikal!!!!</h1>
+                <input type="submit" class="button-action" id="submit" name="submit" value="Pogledaj artikal" />
+                <h1 id="error" style="visibility:hidden; font-style:italic;"><?php echo $_SESSION['error'];?></h1>
             </div>
             <div class="view-article" id="div-view" style="visibility:hidden;">
                 <?php 

@@ -101,6 +101,7 @@ td,th{
     border: 10px solid saddlebrown;
     border-radius: 15px;
     background-color: #CC6600;
+    cursor: pointer;
 }
 
 #submit-article{
@@ -129,6 +130,32 @@ td,th{
     font-style: italic;
     font-size: medium;
     font-weight: bold;
+}
+
+#delete:hover{
+    color:blue;
+    transition: color 0.5s linear 0.1s;
+}
+
+.pretraga{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+select{
+    margin-left: 20px;
+    height: 40px;
+    margin-top: 10px;
+    width: auto;
+    border: 4px solid aliceblue;
+    border-radius: 15px;
+    background-color: #CC6600;
+    color: aliceblue;
+    font-size: medium;
+    font-weight: bolder;
+    font-style: italic;
+
 }
 
 

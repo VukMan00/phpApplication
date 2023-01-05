@@ -6,7 +6,6 @@ class Article{
     public $marka;
     public $cena;
     public $velicina;
-    public $kolicina;
 
     public function __construct($id=null,$naziv=null,$marka=null,$cena=null,$velicina=null)
     {

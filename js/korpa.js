@@ -2,9 +2,6 @@ var xmlHttp;
 
 function obrisi(str,str1,red){
     console.log("AA");
-    console.log(str);
-    console.log(str1);
-
     pomocna = parseInt(red);
     xmlHttp = GetXmlHttpObject();
     if(xmlHttp==null){
@@ -12,35 +9,24 @@ function obrisi(str,str1,red){
         return;
     }
 
+    var cena = parseInt(document.getElementById('ukupno').innerHTML);
+
     var url="handler/deleteFromBasket.php";
-    url=url+"?id="+str+"&userId="+str1;
-    url = url +"&sid="+Math.random();
+    url=url+"?articleId="+str+"&userId="+str1+"&cena="+cena;
+    url=url+"&sid="+Math.random();
     xmlHttp.onreadystatechange = stateChanged;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
-
 }
 
 function stateChanged(){
     if(xmlHttp.readyState==4){
         console.log(xmlHttp.responseText);
-        if(xmlHttp.responseText!=0){
-            var cena = xmlHttp.responseText;
-            console.log(cena);
-            var stringCena = document.getElementById("ukupno").innerHTML;
-            console.log(stringCena);
-            var trenutnaCena = parseInt(stringCena);
-
-            let izracunataCena = trenutnaCena - cena;
-            document.getElementById("ukupno").innerHTML = izracunataCena.toString();
-            document.getElementById("tblBasket").deleteRow(pomocna);
-        }
-        else{
-            console.log("NE CAO");
-        }
+        document.getElementById("tblBasket").deleteRow(pomocna);
+        var cena = xmlHttp.responseText;
+        document.getElementById('ukupno').innerHTML = `${cena}` + ' RSD';
     }
 }
-
 
 function GetXmlHttpObject(){
     var xmlHttp = null;
