@@ -100,6 +100,15 @@
 
     }
 
+    if(isset($_POST['submit']) && $_POST['submit']=="Predjite na kupovinu"){
+        $brojProizvoda = User::getBrojProizvoda($user->userId,$conn);
+        $rslBr = mysqli_fetch_row($brojProizvoda);
+        $user->brojProizvoda = $rslBr[0];
+        $_SESSION['user'] = $user;
+        header("Location: kupovina.php");
+        die();
+    }
+
     if(isset($_POST['LogOut'])){
         $_SESSION['user']=null;
         unset($_SESSION['korpa']);
@@ -124,7 +133,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/korpa.css?<?php echo time(); ?>" rel="stylesheet">
     <script type="text/javascript" src="js/korpa.js"></script>
-    <script tpy="text/javascript" src="js/prikazi.js"></script>
+    <script type="text/javascript" src="js/prikazi.js"></script>
     <title>Korpa</title>
 </head>
 <body>
@@ -202,6 +211,7 @@
             <br>
             <div class="submits">
                 <input type="submit" class="button-action" id="submit" name="submit" value="Pogledaj artikal" />
+                <input type="submit" class="button-action" id="submit" name="submit" value="Predjite na kupovinu" />
                 <h1 id="error" style="visibility:hidden; font-style:italic;"><?php echo $_SESSION['error'];?></h1>
             </div>
             <div class="view-article" id="div-view" style="visibility:hidden;">

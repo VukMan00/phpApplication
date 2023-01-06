@@ -1,5 +1,8 @@
 <?php
 include "../dbBroker.php";
+include "../model/article.php";
+include "../model/basket.php";
+
 if(!isset($_GET["articleId"]) || !isset($_GET["userId"])){
     echo "Jedan od parametra nije prosledjen";
 }
@@ -7,11 +10,9 @@ else{
     $articleId = $_GET["articleId"];
     $userId = $_GET["userId"];
 
-    $sql = "SELECT * FROM articles WHERE id='".$articleId."'";
-    $rezultat = $conn->query($sql);
+    $rezultat = Article::getArticleById($articleId,$conn);
 
-    $sql1 = "SELECT velicina FROM basket WHERE userId='".$userId."' AND articleId='".$articleId."'";
-    $rezultat1 = $conn->query($sql1);
+    $rezultat1 = Basket::getVelicina($articleId,$userId,$conn);
     $velicine = mysqli_fetch_row($rezultat1);
 
     echo "<table border='1'>

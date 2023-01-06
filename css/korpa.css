@@ -4,7 +4,6 @@ html{
     background-repeat: no-repeat;
     font: normal 14px Roboto,arial,sans-serif;
     font-family: 'Dancing Script', cursive!important;
-    /*background-color: #DE8C3C;*/
     color:aliceblue;
     margin: 0px;
 }
@@ -74,7 +73,8 @@ td,th{
     font-size: 1.3em;
     font-style: italic;
     height: 50px;
-    width: 150px;
+    width: auto;
+    cursor: pointer;
     text-shadow: 2px 2px 4px #e2dddd;
     box-shadow: 0 8px 8px 0 #CC6600, 0 6px 20px 0 saddlebrown;
 }

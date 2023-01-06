@@ -5,7 +5,7 @@ function proveri(str){
         alert("Browser does not support HTTP Request");
         return;
     }
-    var url = "handler/provera.php";
+    var url = "handler/checkUsername.php";
     url=url+"?username="+str;
     url=url+"&sid="+Math.random()
     xmlHttp.onreadystatechange = stateChanged;

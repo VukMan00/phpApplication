@@ -1,0 +1,155 @@
+html{
+    background-image: url('https://i.redd.it/o8dlfk93azs31.jpg');
+    background-size:cover;
+    background-repeat: no-repeat;
+    font: normal 14px Roboto,arial,sans-serif;
+    font-family: 'Dancing Script', cursive!important;
+    color:aliceblue;
+    margin: 0px;
+}
+
+.go-back{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+#logOut,#back{
+    border-radius: 20px;
+    width: auto;
+    height: 35px;
+    margin-top: 10px;
+    background-color: #FFCC99;
+    color:aliceblue;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#logOut:hover{
+    width: 90px;
+    height: 40px;
+    background-color: #FF8000;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+#back:hover{
+    width: 160px;
+    height: 40px;
+    background-color: #FF8000;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+input{
+    border: 2px solid aliceblue;
+    border-radius: 5px;
+}
+
+.transaction{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+
+.dataOfUser,
+.type-delivery,
+.type-transaction,
+.commit-transaction{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+.commit-transaction{
+    align-items: center;
+}
+
+.placanja{
+    font-size: large;
+    font-weight: bold;
+}
+
+.podaci-placanja{
+    visibility: hidden;
+    margin-left: 30px;
+}
+
+.logo{
+    display: flex;
+    flex-direction: row;
+}
+
+.button-action{
+    color:aliceblue;
+    background-color:#CC6600;
+    border-radius: 30%;
+    transition-duration: 0.4s;
+    font-size: 1.3em;
+    font-style: italic;
+    height: 50px;
+    width: 200px;
+    text-shadow: 2px 2px 4px #e2dddd;
+    box-shadow: 0 8px 8px 0 #CC6600, 0 6px 20px 0 saddlebrown;
+}
+  
+.button-action:hover {
+    background-color:aliceblue;
+    color: saddlebrown;
+    text-shadow: 2px 2px 4px #CC6600;
+    
+}
+
+#alert{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 100px;
+    margin-left: 500px;
+}
+
+#box{
+    border-radius: 5px; 
+    height: auto;
+    width: auto;
+    float:left;
+    text-align: center;
+    box-shadow: 2px 2px 8px black;
+    background-color: white;
+}
+
+.obavestenje{
+    background-color: saddlebrown;
+    color: white;
+    font-size: larger;
+    padding:5px;
+}
+
+.sadrzaj{
+    margin-top: 30px;
+}
+
+#confirm{
+    height: 25px;
+    width: 80px;
+    border-radius: 8px;
+    background-color: aliceblue;
+    color: saddlebrown;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 400px;
+    box-sizing: border-box;
+    font-size: medium;
+    font-weight: bold;
+}
+
+#confirm:hover{
+    background-color: #FF8000;
+    color: aliceblue;
+    transition: background-color 0.5s linear 0.1s;
+}

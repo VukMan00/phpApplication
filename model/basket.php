@@ -15,7 +15,7 @@ class Basket{
         $this->velicina = $velicina;
     }
 
-    public static function add($userId, $articleId,$kolicina,$velicina,mysqli $conn){
+    public static function add($userId, $articleId,$kolicina,$velicina,$conn){
         $query = "INSERT INTO basket(userId,articleId,kolicina,velicina) VALUES ('$userId','$articleId','$kolicina','$velicina')";
         return $conn->query($query);
     }
@@ -42,6 +42,21 @@ class Basket{
 
     public static function getArticleByArticleId($articleId,$userId,$conn){
         $query = "SELECT articleId FROM basket WHERE articleId = '".$articleId."' and userId='".$userId."'";
+        return $conn->query($query);
+    }
+
+    public static function getKolicina($articleId,$userId,$conn){
+        $query = "SELECT kolicina FROM basket WHERE articleId='".$articleId."' AND userId='".$userId."'";
+        return $conn->query($query);
+    }
+
+    public static function getVelicina($articleId,$userId,$conn){
+        $query = "SELECT velicina FROM basket WHERE userId='".$userId."' AND articleId='".$articleId."'";
+        return $conn->query($query);
+    }
+
+    public static function deleteArticlesOfUser($userId,$conn){
+        $query="DELETE FROM basket WHERE userId='".$userId."'";
         return $conn->query($query);
     }
 

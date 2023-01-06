@@ -1,5 +1,8 @@
 <?php
 include "../dbBroker.php";
+include "../model/user.php";
+include "../model/article.php";
+include "../model/basket.php";
 
 if(!isset($_GET["userId"]) || !isset($_GET["articleId"]) || !isset($_GET['sizes'])){
     echo "Jedan od parametra nije prosledjen";
@@ -19,32 +22,24 @@ else{
         $kolicina = sizeof($arrayOfSizes)-1;
     }
 
-    $q = "SELECT * FROM user WHERE userId='".$userId."'";
-    $rslUser = $conn->query($q);
+    $rslUser = User::getUserByUserId($userId,$conn);
     $user = $rslUser->fetch_object();
 
-    $q1 = "SELECT * FROM articles WHERE id='".$articleId."'";
-    $rslArticle = $conn->query($q1);
+    $rslArticle = Article::getArticleById($articleId,$conn);
     $article = $rslArticle->fetch_object();
 
-    $q2 = "SELECT articleId FROM basket WHERE articleId = '".$articleId."' and userId='".$userId."'";
-    $rslProvera = $conn->query($q2);
+    $rslProvera = Basket::getArticleByArticleId($articleId,$userId,$conn);
     $provera = mysqli_fetch_row($rslProvera);
 
     if($provera==null){
         $user->brojProizvoda = $user->brojProizvoda+1;
-
         $article->velicina = implode(" ",$arrayOfSizes);
 
-        $q3 = "UPDATE user SET brojProizvoda='".$user->brojProizvoda."'WHERE userId='".$user->userId."'";
-        $conn->query($q3);
-
-        $q4 = "INSERT INTO basket(userId,articleId,kolicina,velicina) VALUES ('$user->userId','$articleId','$kolicina','$article->velicina')";
-        $conn->query($q4);
+        User::updateBrojProizvoda($userId,$user->brojProizvoda,$conn);
+        Basket::add($userId,$articleId,$kolicina,$article->velicina,$conn);
     }
     else{
-        $q5 = "SELECT velicina,kolicina FROM basket WHERE userId= '".$user->userId."' and articleId ='".$articleId."'";
-        $rslCheck = $conn->query($q5);
+        $rslCheck = Basket::getSizesByArticleId($articleId,$userId,$conn);
         $checkArray = mysqli_fetch_row($rslCheck);
         $velicinaUKorpi = $checkArray[0];
         $kolicinaUKorpi = $checkArray[1];
@@ -56,13 +51,10 @@ else{
             $velicinaUKorpi = $velicinaUKorpi." ".$arrayOfSizes[$i];
             $kolicinaUKorpi++;
         }
-
-        $q6 = "UPDATE basket SET kolicina='".$kolicinaUKorpi."' ,velicina='".$velicinaUKorpi."' WHERE userId='".$userId."' and articleId='".$articleId."'";
-        $conn->query($q6);
+        Basket::updateVelicinaKolicina($articleId,$userId,$kolicinaUKorpi,$velicinaUKorpi,$conn);
     }
-
-    $q7 = "SELECT brojProizvoda FROM user WHERE userId = '".$userId."'";
-    $rslBrProizvoda = $conn->query($q7);
+    
+    $rslBrProizvoda = User::getBrojProizvoda($userId,$conn);
     $brojProizvoda = mysqli_fetch_row($rslBrProizvoda);
     echo $brojProizvoda[0];
 
