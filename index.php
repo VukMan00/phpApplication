@@ -55,10 +55,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-offset-5 col-md-4 text-center">
-            <h1 class='text-white'>Welcome to Login Form</h1>
+            <h1 class='text-white'>Dobrodošli na Login formu</h1>
             <form method="post" action="#">
                 <div class="form-login"></br>
-                    <h4>Login form</h4>
+                    <h4>Ulogujte se</h4>
                     </br>
                     <input type="text" name="username" id="username" class="form-control input-sm chat-input" placeholder="username"/>
                     </br></br>
@@ -70,7 +70,7 @@
                             </span>
                     </div>
                     <br>
-                    <a href="registration.php">Don't have account? Sign up!!</a>
+                    <a href="registration.php">Nemate nalog? Registrujte se!!</a>
                     <input type="text" name="error" class="form-control input-sm chat-input" style="border:none" value = "<?php echo (isset($error))?$error:'';?>"/>
                 </div>
             </form>

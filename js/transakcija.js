@@ -41,12 +41,14 @@ function transakcija(str){
             vrstaIsporuke=isporuke[j].value;
         }
     }
-    
-    if(document.getElementById('error').style.visibility == 'visible'){
-        document.getElementById('error').innerHTML = 'Morate pravilno uneti podatke!';
+
+    if(document.getElementById('proizvodi').innerHTML===""){
+        document.getElementById('alert').style.visibility = 'visible';
+        document.getElementById('opis').innerHTML = "Nemate artiakala u korpi. Ne mozete izvrsiti transakciju";
         return;
     }
-    else if(adresa==="" || opstina==="" || brojTelefona==="" || email==="" || brojacPlacanje==0 || brojacIsporuke==0){
+
+    if(adresa==="" || opstina==="" || brojTelefona==="" || email==="" || brojacPlacanje==0 || brojacIsporuke==0){
         document.getElementById('error').style.visibility = 'visible';
         document.getElementById('error').innerHTML = 'Morate pravilno uneti podatke!';
         return;
@@ -56,6 +58,12 @@ function transakcija(str){
         var banka = document.getElementById('banka').value;
         var brojRacuna = document.getElementById('brojRacuna').value;
 
+        console.log(banka);
+        if((document.getElementById('platnaKartica').checked===true) && (banka==="" || brojRacuna==="")){
+            document.getElementById('error').style.visibility = 'visible';
+            document.getElementById('error').innerHTML = 'Morate pravilno uneti podatke!';
+            return;
+        }
         var url = "handler/addTransaction.php";
         url = url+"?userId="+userId+"&adresa="+adresa+"&opstina="+opstina+"&brojTelefona="+brojTelefona+"&email="+email;
         url = url+"&placanje="+vrstaPlacanja+"&isporuka="+vrstaIsporuke+"&banka="+banka+"&brojRacuna="+brojRacuna;
@@ -68,7 +76,9 @@ function transakcija(str){
 
 function stateChanged(){
     if(xmlHttp.readyState==4){
-        document.getElementById('alert').style.visibility='visible';
+        if(xmlHttp.responseText === "1"){
+            document.getElementById('alert').style.visibility='visible';
+        }
     }
 }
 

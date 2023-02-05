@@ -8,13 +8,16 @@ if(!isset($_GET["userId"]) || !isset($_GET["articleId"]) || !isset($_GET['sizes'
     echo "Jedan od parametra nije prosledjen";
 }
 else{
-    
     $userId = $_GET["userId"];
     $articleId = $_GET["articleId"];
     $selectedSizes = $_GET["sizes"];
     $kolicina = 0;
     $arrayOfSizes = array();
     $arrayOfSizes = explode(" ",$selectedSizes);
+    if($selectedSizes==''){
+        echo "Error";
+        return;
+    }
     if(sizeof($arrayOfSizes)==0){
         $kolicina++;
     }

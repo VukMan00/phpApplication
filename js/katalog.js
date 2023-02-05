@@ -7,12 +7,11 @@ function dodaj(articleId,userId){
         return false;
     }
 
-    var selectedSizes = document.getElementsByClassName('size');
+    var selectedSizes = document.getElementsByClassName('size'.concat('',articleId));
     var arraySizes = '';
     for(let i=0;i<selectedSizes.length;i++){
         if(selectedSizes[i].checked){
             arraySizes = selectedSizes[i].value + " " + arraySizes;
-            console.log(selectedSizes[i].value);
             selectedSizes[i].checked = false;
         }
     }
@@ -28,7 +27,12 @@ function dodaj(articleId,userId){
 
 function stateChanged(){
     if(xmlHttp.readyState==4){
-        if(xmlHttp.responseText!=0){
+        console.log(xmlHttp.responseText)
+        if(xmlHttp.responseText=="Error"){
+            document.getElementById("alert").style.visibility = "visible";
+            document.getElementById("textAlert").innerHTML = "Morate izabrati velicinu da bi ste mogli da dodate artikal u korpu!!";
+        }
+        else if(xmlHttp.responseText!=0){
             document.getElementById("brojProizvoda").innerHTML = `${xmlHttp.responseText}`;
             document.getElementById("alert").style.visibility = "visible";
         }
@@ -63,4 +67,5 @@ function GetXmlHttpObject(){
 
 function zatvori(){
     document.getElementById("alert").style.visibility = "hidden";
+    document.getElementById("textAlert").innerHTML = "Proizvod je dodat u korpu";
 }

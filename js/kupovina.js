@@ -50,13 +50,14 @@ function proveraEmail(str){
     }
     else{
         document.getElementById('error').style.visibility = 'visible';
-        document.getElementById('error').innerHTML = "Pogresan unos broja email-a!";
+        document.getElementById('error').innerHTML = "Pogresan unos email-a!";
         document.getElementById('email').focus();
         return;
     }
 }
 
 function proveraBrojaRacuna(str){
+    const pattern = new RegExp('[0-9]+');
     var brojRacuna = str.value;
     if(brojRacuna===""){
         document.getElementById('error').style.visibility = 'visible';
@@ -64,15 +65,18 @@ function proveraBrojaRacuna(str){
         str.focus();
         return;
     }
-    if(brojRacuna.length!=18){
-        document.getElementById('error').style.visibility = 'visible';
-        document.getElementById('error').innerHTML = "Pogresan unos broja racuna!";
-        document.getElementById('brojRacuna').focus();
+    
+    if(pattern.test(brojRacuna) && brojRacuna.length===18){
+        console.log("AAAA");
+        document.getElementById('error').style.visibility = 'hidden';
         return;
     }
     else{
-        document.getElementById('error').style.visibility = 'hidden';
-        return;
+        console.log("AAAA");
+        document.getElementById('error').style.visibility = 'visible';
+        document.getElementById('error').innerHTML = "Pogresan unos broja racuna!";
+        str.focus();
+        return; 
     }
 }
 

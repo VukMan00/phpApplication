@@ -30,8 +30,6 @@
             $cena = $cena + $article->cena*$kolicine[$i];
             $korpa_items[] = $article;
         }
-
-        
     }
 
     if(!isset($_SESSION['viewArticle'])){
@@ -80,19 +78,18 @@
         $article = $_SESSION['viewArticle'];
         $kolicina = $_SESSION['kolicina'];
         $velicine = $_POST['velicina'];
+
+        $velicineArtikla = explode(',',$article->velicina);
+        $velicineKorpe = explode(' ',$velicine);
+        $flag = false;
+
         if(!empty($_POST['size'])){
             $sizes = $_POST['size'];
             foreach($sizes as $size){
-                $velicine = $velicine. " " .$size;
+                $velicine = $velicine." ".$size;
                 $kolicina++;
             }
             
-            $rsl = Basket::updateVelicinaKolicina($article->id,$user->userId,$kolicina,$velicine,$conn);
-        }
-        else{
-            if($velicine!=$article->velicina){
-                $kolicina--;
-            }
             $rsl = Basket::updateVelicinaKolicina($article->id,$user->userId,$kolicina,$velicine,$conn);
         }
         echo '<style>#div-view{visibility: hidden !important;}</style>';
@@ -227,7 +224,7 @@
                 <label for="cena">Cena</label>
                 <input type="text" name="cena" id="cena" value="<?php echo $view->cena; ?>" readonly/>
                 <label for="velicina">Velicine</label>
-                <input type="text" name="velicina" id="velicina" value="<?php echo $view->velicina; ?>"/>
+                <input type="text" name="velicina" id="velicina" value="<?php echo $view->velicina; ?>" readonly/>
                 <label>Dostupne velicine:</label>
                 <?php 
                     for($i=0;$i<sizeof($dostupneVelicine);$i++):

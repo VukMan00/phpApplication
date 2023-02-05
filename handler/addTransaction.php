@@ -26,10 +26,12 @@ else{
     while($row = mysqli_fetch_object($rezultat)){
         $articleId = $row->articleId;
         $kolicina = $row->kolicina;
+        $velicina = $row->velicina;
 
         $rezultat2 = Article::getArticleById($articleId,$conn);
         $article = $rezultat2->fetch_object();
 
+        $article->velicina = $velicina;
         $article->kolicina = $kolicina;
         $articles[] = $article;
     }
@@ -40,11 +42,10 @@ else{
 
     Transaction::addTransaction($adresa,$opstina,$brojTelefona,$email,$placanje,$isporuka,$ukupanIznos,$userId,$conn);
 
-    $transactionId = -1;
+    $rsl = Transaction::getTransaction($conn);
+    $rslTransaction = mysqli_fetch_row($rsl);
+    $transactionId = $rslTransaction[0];
     if($banka!='' && $brojRacuna!=''){
-        $rsl = Transaction::getTransaction($conn);
-        $rslTransaction = mysqli_fetch_row($rsl);
-        $transactionId = $rslTransaction[0];
         Payment::addPayment($banka,$brojRacuna,$transactionId,$conn);
     }
 
@@ -57,6 +58,8 @@ else{
 
     Basket::deleteArticlesOfUser($userId,$conn);
     User::updateBrojProizvoda($userId,0,$conn);
+
+    echo "1";
 
     $conn->close();
 }

@@ -51,7 +51,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/katalog.css?<?php echo time(); ?>" rel="stylesheet">
-    <script type="text/javascript" src="js/katalog.js"></script>
+    <script type="text/javascript" src="js/katalog.js?t=1491313943549"></script>
     <title>Katalog</title>
 </head>
 <body>
@@ -117,7 +117,7 @@
                         ?>
                         <div>
                             <label for="size" style="margin-left:10px"><?php echo $arrayVelicina[$j]; ?></label>
-                            <input type="checkbox" id="size" class="size" name="size[]" value="<?php echo $arrayVelicina[$j];?>" />
+                            <input type="checkbox" class=<?php echo "size".$ar->id; ?> name="size[]" value="<?php echo $arrayVelicina[$j];?>" />
                         </div>
                         <?php 
                             endfor;
@@ -134,7 +134,7 @@
                         Obaveštenje!
                     </div>
                     <div class="sadrzaj">
-                        <p>Proizvod je dodat u korpu</p>
+                        <p id="textAlert">Proizvod je dodat u korpu</p>
                         <button id="confirm">OK</button>
                     </div>
                 </div>

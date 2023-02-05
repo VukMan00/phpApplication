@@ -6,6 +6,11 @@ if(!isset($_GET["username"])){
 }
 else{
     $username = $_GET["username"];
+    if($username === ""){
+        echo "2";
+        return;
+    }
+    
     $sql = "SELECT username FROM user WHERE username='".$username."'";
     $rezultat = $conn->query($sql);
 

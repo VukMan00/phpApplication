@@ -23,10 +23,12 @@ function obrisi(str,str1,red){
 function stateChanged(){
     if(xmlHttp.readyState==4){
         console.log(xmlHttp.responseText);
-        document.getElementById("tblBasket").deleteRow(pomocna);
-        document.querySelector('select').remove(pomocna);
-        var cena = xmlHttp.responseText;
-        document.getElementById('ukupno').innerHTML = `${cena}` + ' RSD';
+        if(xmlHttp.responseText>=0){
+            document.getElementById("tblBasket").deleteRow(pomocna);
+            document.querySelector('select').remove(pomocna);
+            var cena = xmlHttp.responseText;
+            document.getElementById('ukupno').innerHTML = `${cena}` + ' RSD';
+        }
     }
 }
 
