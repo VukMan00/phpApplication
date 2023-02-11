@@ -9,12 +9,9 @@ if(!isset($_GET["articleId"]) || !isset($_GET["userId"])){
 else{
     $articleId = $_GET["articleId"];
     $userId = $_GET["userId"];
-
     $rezultat = Article::getArticleById($articleId,$conn);
-
     $rezultat1 = Basket::getVelicina($articleId,$userId,$conn);
     $velicine = mysqli_fetch_row($rezultat1);
-
     echo "<table border='1'>
     <tr>
     <thead>
@@ -25,7 +22,6 @@ else{
         <th>Velicine</th>
     </thead>
     </tr>";
-
     while($article=$rezultat->fetch_object()){
         echo "<tr>";
         echo "<td>"."<label for='select[]'>".$article->id."</label>" . "<input type='checkbox' id='select' class='select' name='select[]' value=".$article->id."/>"."</td>";
@@ -35,12 +31,7 @@ else{
         echo "<td>".$velicine[0]."</td>";
         echo "</tr>";
     }
-
     echo "</table>";
-
     $conn->close();
 }
-
-
-
 ?>

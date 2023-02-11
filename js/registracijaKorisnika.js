@@ -4,7 +4,6 @@ function registruj(str,str1,str2,str3){
     var password = str1.value;
     var ime = str2.value;
     var prezime = str3.value;
-    console.log("aaaaa");
     xmlHttp = GetXmlHttpObject();
     if(xmlHttp==null){
         alert("Browser does not support HTTP Request");

@@ -1,12 +1,10 @@
 var xmlHttp;
-
 function dodaj(articleId,userId){
     xmlHttp = GetXmlHttpObject();
     if(xmlHttp==null){
         alert("Browser does not support HTTP Request");
         return false;
     }
-
     var selectedSizes = document.getElementsByClassName('size'.concat('',articleId));
     var arraySizes = '';
     for(let i=0;i<selectedSizes.length;i++){
@@ -21,7 +19,6 @@ function dodaj(articleId,userId){
     xmlHttp.onreadystatechange = stateChanged;
     xmlHttp.open("GET",url,true);
     xmlHttp.send(null);
-
     return false;
 }
 
@@ -39,7 +36,6 @@ function stateChanged(){
         else{
             document.getElementById("brojProizvoda").innerHTML = "Broj proizvoda";
         }
-
         document.getElementById("confirm").addEventListener('click',function(){
             zatvori();
         })

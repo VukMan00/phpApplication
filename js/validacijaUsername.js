@@ -1,7 +1,6 @@
 var xmlHttp;
 function proveri(str){
     var username = str.value;
-    console.log("AAAAA");
     xmlHttp = GetXmlHttpObject();
     if(xmlHttp==null){
         alert("Browser does not support HTTP Request");
@@ -18,7 +17,6 @@ function proveri(str){
 function stateChangedUsername(){
     if(xmlHttp.readyState == 4){
         console.log("Zahtev je obradjen");
-        console.log(xmlHttp.responseText);
         if(xmlHttp.responseText == "0"){
             document.getElementById('error').style.visibility = 'visible';
             document.getElementById('error').setAttribute('value','Korisnik sa takvim username vec postoji.');

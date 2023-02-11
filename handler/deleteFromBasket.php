@@ -26,14 +26,11 @@ else{
     $rezultat3 = Article::getCena($articleId,$conn);
     $rsl3 = mysqli_fetch_row($rezultat3);
     $cenaArtikla = $rsl3[0];
-
     $trenutnaCena = $ukupnaCena - $cenaArtikla*$kolicina;
 
     Basket::delete($articleId,$userId,$conn);
 
     echo $trenutnaCena;
-
     $conn->close();
 }
-
 ?>

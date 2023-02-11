@@ -19,6 +19,7 @@ else{
         return;
     }
     if(sizeof($arrayOfSizes)==0){
+        //Ukoliko nekim slucajem ne bude odabrana nijedna velicina, artikal ce imati 1 kolicinu
         $kolicina++;
     }
     else{
@@ -38,8 +39,8 @@ else{
         $user->brojProizvoda = $user->brojProizvoda+1;
         $article->velicina = implode(" ",$arrayOfSizes);
 
-        User::updateBrojProizvoda($userId,$user->brojProizvoda,$conn);
         Basket::add($userId,$articleId,$kolicina,$article->velicina,$conn);
+        User::updateBrojProizvoda($userId,$user->brojProizvoda,$conn);
     }
     else{
         $rslCheck = Basket::getSizesByArticleId($articleId,$userId,$conn);
@@ -57,14 +58,8 @@ else{
         Basket::updateVelicinaKolicina($articleId,$userId,$kolicinaUKorpi,$velicinaUKorpi,$conn);
     }
     
-    $rslBrProizvoda = User::getBrojProizvoda($userId,$conn);
-    $brojProizvoda = mysqli_fetch_row($rslBrProizvoda);
-    echo $brojProizvoda[0];
+    echo $user->brojProizvoda;
 
     $conn->close();
 }
-
-
-
-
 ?>

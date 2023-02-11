@@ -45,7 +45,7 @@ else{
     $rsl = Transaction::getTransaction($conn);
     $rslTransaction = mysqli_fetch_row($rsl);
     $transactionId = $rslTransaction[0];
-    if($banka!='' && $brojRacuna!=''){
+    if($placanje==='Platna kartica' && $banka!='' && $brojRacuna!=''){
         Payment::addPayment($banka,$brojRacuna,$transactionId,$conn);
     }
 
@@ -63,7 +63,4 @@ else{
 
     $conn->close();
 }
-
-
-
 ?>

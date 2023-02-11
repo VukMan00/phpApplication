@@ -6,6 +6,7 @@ function provera(str){
         str.focus();
     }
     else{
+        document.getElementById('error').style.innerHTML = '';
         document.getElementById('error').style.visibility = 'hidden';
     }
 
@@ -13,7 +14,6 @@ function provera(str){
 
 function proveraBroja(str){
     var broj = str.value;
-   
     if(broj===""){
         document.getElementById('error').style.visibility = 'visible';
         document.getElementById('error').innerHTML = "Polje je obavezno!";
@@ -22,6 +22,7 @@ function proveraBroja(str){
     }
     const pattern = new RegExp('06[0-9]{1}-[0-9]{4}-[0-9]{3}');
     if(pattern.test(broj)){
+        document.getElementById('error').style.innerHTML = '';
         document.getElementById('error').style.visibility = 'hidden';
         return;
     }
@@ -45,6 +46,7 @@ function proveraEmail(str){
 
     const pattern = new RegExp('[a-zA-Z]+[0-9]*@(gmail|yahoo).com');
     if(pattern.test(email)){
+        document.getElementById('error').style.innerHTML = '';
         document.getElementById('error').style.visibility = 'hidden';
         return;
     }
@@ -67,12 +69,11 @@ function proveraBrojaRacuna(str){
     }
     
     if(pattern.test(brojRacuna) && brojRacuna.length===18){
-        console.log("AAAA");
+        document.getElementById('error').style.innerHTML = '';
         document.getElementById('error').style.visibility = 'hidden';
         return;
     }
     else{
-        console.log("AAAA");
         document.getElementById('error').style.visibility = 'visible';
         document.getElementById('error').innerHTML = "Pogresan unos broja racuna!";
         str.focus();

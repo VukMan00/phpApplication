@@ -20,9 +20,4 @@ class Payment{
         return $conn->query($query);
     }
 }
-
-
-
-
-
 ?>

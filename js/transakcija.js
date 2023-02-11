@@ -7,7 +7,6 @@ var placanje;
 var isporuke;
 var vrstaPlacanja;
 var vrstaIsporuke;
-
 function transakcija(str){
     var userId = str;
     xmlHttp = GetXmlHttpObject();
@@ -15,7 +14,6 @@ function transakcija(str){
         alert("Browser does not support HTTP Request");
         return;
     }
-
     adresa = document.getElementById('adresa').value;
     opstina = document.getElementById('opstina').value;
     brojTelefona = document.getElementById('brojTelefona').value;
@@ -25,7 +23,6 @@ function transakcija(str){
 
     let brojacPlacanje = 0;
     let brojacIsporuke = 0;
-
     vrstaPlacanja = '';
     vrstaIsporuke = '';
     for(let i=0;i<placanje.length;i++){
@@ -34,32 +31,27 @@ function transakcija(str){
             vrstaPlacanja = placanje[i].value;
         }
     }
-
     for(let j=0;j<isporuke.length;j++){
         if(isporuke[j].checked==true){
             brojacIsporuke++;
             vrstaIsporuke=isporuke[j].value;
         }
     }
-
     if(document.getElementById('proizvodi').innerHTML===""){
         document.getElementById('alert').style.visibility = 'visible';
         document.getElementById('opis').innerHTML = "Nemate artiakala u korpi. Ne mozete izvrsiti transakciju";
         return;
     }
-
     if(adresa==="" || opstina==="" || brojTelefona==="" || email==="" || brojacPlacanje==0 || brojacIsporuke==0){
         document.getElementById('error').style.visibility = 'visible';
         document.getElementById('error').innerHTML = 'Morate pravilno uneti podatke!';
         return;
     }
-    else{
-        document.getElementById('error').style.visibility = 'hidden';
+    else if(document.getElementById('error').style.innerHTML === ""){
         var banka = document.getElementById('banka').value;
         var brojRacuna = document.getElementById('brojRacuna').value;
-
-        console.log(banka);
-        if((document.getElementById('platnaKartica').checked===true) && (banka==="" || brojRacuna==="")){
+        const pattern = new RegExp('[0-9]+');
+        if((document.getElementById('platnaKartica').checked===true) && (banka==="" || brojRacuna==="" || (pattern.test(brojRacuna)==false || brojRacuna.length!=18))){
             document.getElementById('error').style.visibility = 'visible';
             document.getElementById('error').innerHTML = 'Morate pravilno uneti podatke!';
             return;

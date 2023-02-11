@@ -11,7 +11,6 @@
         if(!empty($odg) && $odg->num_rows > 0){
             $user = $odg->fetch_object();
             $_SESSION['user'] = $user;
-            unset($_SESSION['korpa']);
             header('Location:katalog.php');
             exit();
         }

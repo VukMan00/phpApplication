@@ -39,7 +39,6 @@
 
     if(isset($_POST['LogOut'])){
         $_SESSION['user']=null;
-        unset($_SESSION['korpa']);
         header("Location:index.php");
     }
 ?>

@@ -33,9 +33,5 @@ class Transaction{
         $query = "SELECT transactionId FROM transaction ORDER BY transactionId DESC LIMIT 1";
         return $conn->query($query);
     }
-    
 }
-
-
-
 ?>

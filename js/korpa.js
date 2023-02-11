@@ -1,9 +1,7 @@
 var xmlHttp;
-
+var pomocna;
 function obrisi(str,str1,red){
-    console.log("AA");
     pomocna = parseInt(red);
-    console.log(pomocna);
     xmlHttp = GetXmlHttpObject();
     if(xmlHttp==null){
         alert("Browser does not support HTTP Request");

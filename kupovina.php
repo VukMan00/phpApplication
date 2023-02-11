@@ -53,8 +53,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/kupovina.css?<?php echo time(); ?>" rel="stylesheet">
-    <script type="text/javascript" src="js/kupovina.js?t=1491313943549"></script>
-    <script type="text/javascript" src="js/transakcija.js"></script>
+    <script type="text/javascript" src="js/kupovina.js"></script>
+    <script type="text/javascript" src="js/transakcija.js?t=1491313943549"></script>
     <title>Kupovina</title>
 </head>
 <body>
